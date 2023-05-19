@@ -24,6 +24,11 @@
 #define MADCTL_BGR 0x08
 #define MADCTL_MH  0x04
 
+#define SPI_MOSI_PIN        23  //      SPI OK
+#define SPI_CLK_PIN         18  //      SPI OK
+#define SPI_CS_PIN          05  //      SPI OK
+#define SPI_MISO_PIN        04  //  OUT OK  // MISO (may be usable for other purposes like Earth pulse)
+
 ILI9486_SPI::ILI9486_SPI(int8_t cs, int8_t dc, int8_t rst) : Adafruit_GFX(320, 480), _spi_settings(SPI_SPEED, MSBFIRST, SPI_MODE0)
 {
   _spi16_mode = true;
@@ -245,7 +250,7 @@ void ILI9486_SPI::setSpiKludge(bool rpi_spi16_mode)
 void ILI9486_SPI::init(void)
 {
   digitalWrite(_cs, HIGH);
-  SPI.begin();
+  SPI.begin(SPI_CLK_PIN,SPI_MISO_PIN,SPI_MOSI_PIN,SPI_CS_PIN);
   SPI.beginTransaction( { SPI_SPEED, MSBFIRST, SPI_MODE0 } );
   SPI.endTransaction();
   if (_rst >= 0)
